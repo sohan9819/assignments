@@ -4,6 +4,27 @@
 */
 
 function isPalindrome(str) {
+  if (str.length <= 1) return true;
+
+  const strList = str
+    .toLowerCase()
+    .replace(/[^a-z]+/gi, '')
+    .split('');
+
+  let [start, end] = [0, strList.length - 1];
+
+  while (start < end) {
+    // console.log(
+    //   `${strList[start]} - ${strList[end]}  -> ${
+    //     strList[start] !== strList[end]
+    //   }`
+    // );
+    if (strList[start] !== strList[end]) return false;
+
+    start += 1;
+    end -= 1;
+  }
+
   return true;
 }
 
