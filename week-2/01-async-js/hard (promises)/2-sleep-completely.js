@@ -5,6 +5,15 @@
  */
 
 function sleep(milliseconds) {
+  let threadRun = true;
+  let n = 0;
+
+  const promise = new Promise((resolve) => {
+    threadRun = false;
+    setTimeout(resolve, milliseconds);
+  });
+
+  return promise;
 }
 
 module.exports = sleep;
