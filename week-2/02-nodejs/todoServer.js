@@ -39,11 +39,50 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+const bodyParser = require('body-parser');
+const todos = require('./todos.json');
+
+const app = express();
+
+app.use(bodyParser.json());
+
+app.get('/todos', (req, res) => {
+  console.log(`Get Todos : ${todos}`);
+  return res.status(200).json(todos);
+});
+
+app.get('/todos/:id', (req, res) => {
+  const todoId = req.params.id;
+  const todo = todos.find((todo) => todo.id == todoId);
+
+  return todo
+    ? res.status(200).json(todo)
+    : res.status(404).json({ message: 'Todo not found' });
+});
+
+app.post('/todos', async (req, res) => {
+  const newTodo = { id: todos.length + 1, ...req.body };
+  console.log(newTodo);
+  todos.push(newTodo);
+  return res.status(201).json(newTodo);
+});
+
+app.put('/todos/:id', (req, res) => {
+  const updatedTodo = req.body;
+  const todoId = req.params;
+
+  const todoIndex = todos.findIndex((todo) => todo.id == todoId);
+
+  todos[todoIndex] = updatedTodo;
+
+  return res.json(todos);
+});
+app.delete('/todos/:id', (req, res) => {
+  const todoId = req.params;
+  todos.filter((todo) => todo.id != todoId);
+
+  return res.json(todos);
+});
+
+module.exports = app;

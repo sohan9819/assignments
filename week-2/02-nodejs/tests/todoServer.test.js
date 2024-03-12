@@ -2,7 +2,7 @@ const http = require('http');
 const { v4: uuidv4 } = require('uuid');
 
 const server = require('../todoServer');
-const port = 3000;
+const port = 5000;
 const baseUrl = `http://localhost:${port}`;
 
 describe('Todo API', () => {
@@ -11,10 +11,10 @@ describe('Todo API', () => {
 
   beforeAll((done) => {
     if (globalServer) {
-        globalServer.close();
+      globalServer.close();
     }
-    globalServer = server.listen(3000);
-    done()
+    globalServer = server.listen(port);
+    done();
   });
 
   afterAll((done) => {
@@ -110,7 +110,7 @@ describe('Todo API', () => {
       (res) => {
         expect(res.statusCode).toBe(200);
         done();
-      }
+      },
     );
 
     req.write(JSON.stringify(updatedTodo));
@@ -128,7 +128,7 @@ describe('Todo API', () => {
       (res) => {
         expect(res.statusCode).toBe(200);
         done();
-      }
+      },
     );
 
     req.end();
